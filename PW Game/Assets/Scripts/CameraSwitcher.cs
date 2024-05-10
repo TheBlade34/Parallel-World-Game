@@ -2,67 +2,74 @@ using UnityEngine;
 
 public class CameraSwitcher : MonoBehaviour
 {
-    public Camera orthoCamera; // Reference to the orthographic camera
-    public Camera perspectiveCamera; // Reference to the perspective camera
-    public GameObject playerBall; // Reference to the player ball
-    public float switchDuration = 1.0f; // Duration of the camera switch animation
-
+    public Camera orthoCamera;
+    public Camera perspectiveCamera;
+    public GameObject player1;
+    public GameObject player2;
+    public float switchDuration = 1.0f;
     private Camera currentCamera;
     private Camera targetCamera;
     private float switchTimer;
     private bool isSwitching;
+    private Vector3 perspectiveDefaultPosition; 
+
+    public enum CameraMode
+    {
+        Ortho,
+        Perspective
+    }
 
     void Start()
     {
-        // Initialize current and target cameras
-        currentCamera = orthoCamera;
-        targetCamera = perspectiveCamera;
-
-        // Disable the perspective camera initially
-        perspectiveCamera.gameObject.SetActive(false);
+        InitializeCameras();
     }
 
     void Update()
     {
-        // Update camera position to match player ball
-        transform.position = playerBall.transform.position;
-
-        // Check for input to switch cameras
         if (Input.GetKeyDown(KeyCode.R) && !isSwitching)
         {
             SwitchCameras();
         }
 
-        // If a switch is in progress, update the transition
         if (isSwitching)
         {
-            switchTimer += Time.deltaTime;
-
-            // Calculate interpolation factor based on time
-            float t = Mathf.Clamp01(switchTimer / switchDuration);
-
-            // Interpolate camera position
-            transform.position = Vector3.Lerp(currentCamera.transform.position, targetCamera.transform.position, t);
-
-            // If the switch is complete, finish the transition
-            if (switchTimer >= switchDuration)
-            {
-                isSwitching = false;
-                currentCamera.gameObject.SetActive(false);
-                switchTimer = 0f;
-            }
+            UpdateCameraPosition();
         }
+    }
+
+    void InitializeCameras()
+    {
+        currentCamera = orthoCamera;
+        targetCamera = perspectiveCamera;
+        perspectiveCamera.gameObject.SetActive(false);
+        perspectiveDefaultPosition = perspectiveCamera.transform.position;
+        transform.position = player1.transform.position;
     }
 
     void SwitchCameras()
     {
-        // Toggle between current and target cameras
+        isSwitching = true;
+        switchTimer = 0f;
+        currentCamera.gameObject.SetActive(false);
+        targetCamera.gameObject.SetActive(true);
         Camera temp = currentCamera;
         currentCamera = targetCamera;
         targetCamera = temp;
+    }
 
-        // Activate the target camera and start the switch
-        targetCamera.gameObject.SetActive(true);
-        isSwitching = true;
+    void UpdateCameraPosition()
+    {
+        switchTimer += Time.deltaTime;
+        float t = Mathf.Clamp01(switchTimer / switchDuration);
+        transform.position = Vector3.Lerp(currentCamera.transform.position, targetCamera.transform.position, t);
+        if (switchTimer >= switchDuration)
+        {
+            isSwitching = false;
+        }
+    }
+
+    public CameraMode GetCurrentCameraMode()
+    {
+        return (currentCamera == orthoCamera) ? CameraMode.Ortho : CameraMode.Perspective;
     }
 }
