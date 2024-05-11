@@ -19,16 +19,26 @@ public class PlatformActivator : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player2"))
+        if (other.CompareTag("Player2") || (other.CompareTag("Player1")))
         {
             platformScript.enabled = true;
             renderer.material = greenMaterial; 
+        }
+        if (other.CompareTag("Player2") && (other.CompareTag("Player1")))
+        {
+            platformScript.enabled = true;
+            renderer.material = greenMaterial;
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player2"))
+        if (other.CompareTag("Player2") || (other.CompareTag("Player1")))
+        {
+            platformScript.enabled = false;
+            renderer.material = redMaterial;
+        }
+        if (other.CompareTag("Player2") && (other.CompareTag("Player1")))
         {
             platformScript.enabled = false;
             renderer.material = redMaterial;

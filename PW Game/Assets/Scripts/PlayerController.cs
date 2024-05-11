@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         Vector3 targetVelocity = movementInput * maxSpeed;
         currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, Time.deltaTime * (movementInput.magnitude > 0 ? acceleration : deceleration));
         rb.velocity = new Vector3(currentVelocity.x, rb.velocity.y, currentVelocity.z);
-        float perspectiveHeightOffset = 7.0f;
+        float perspectiveHeightOffset = 10f;
         Vector3 targetCameraPos = new Vector3(transform.position.x, transform.position.y + perspectiveHeightOffset, perspectiveCamera.transform.position.z);
         perspectiveCamera.transform.position = Vector3.Lerp(perspectiveCamera.transform.position, targetCameraPos, Time.deltaTime * cameraFollowSpeed);
     }
