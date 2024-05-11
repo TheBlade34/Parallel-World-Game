@@ -12,18 +12,15 @@ public class CameraSwitcher : MonoBehaviour
     private float switchTimer;
     private bool isSwitching;
     private Vector3 perspectiveDefaultPosition; 
-
     public enum CameraMode
     {
         Ortho,
         Perspective
     }
-
     void Start()
     {
         InitializeCameras();
     }
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R) && !isSwitching)
@@ -36,7 +33,6 @@ public class CameraSwitcher : MonoBehaviour
             UpdateCameraPosition();
         }
     }
-
     void InitializeCameras()
     {
         currentCamera = orthoCamera;
@@ -67,7 +63,6 @@ public class CameraSwitcher : MonoBehaviour
             isSwitching = false;
         }
     }
-
     public CameraMode GetCurrentCameraMode()
     {
         return (currentCamera == orthoCamera) ? CameraMode.Ortho : CameraMode.Perspective;

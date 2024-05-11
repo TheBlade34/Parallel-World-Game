@@ -356,6 +356,7 @@
 "Assets/Scripts/CameraSwitcher.cs"
 "Assets/Scripts/CollectibleCoins.cs"
 "Assets/Scripts/Counter.cs"
+"Assets/Scripts/LevelLoader.cs"
 "Assets/Scripts/MovingPlatform.cs"
 "Assets/Scripts/PlatfromActivator.cs"
 "Assets/Scripts/PlayerActivationManager.cs"

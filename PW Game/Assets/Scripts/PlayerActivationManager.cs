@@ -5,7 +5,6 @@ public class PlayerActivation : MonoBehaviour
     public GameObject player1;
     public GameObject player2;
     public CameraSwitcher cameraSwitcher;
-
     private void Update()
     {
         CameraSwitcher.CameraMode currentMode = cameraSwitcher.GetCurrentCameraMode();

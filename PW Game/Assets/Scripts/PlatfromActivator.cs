@@ -5,9 +5,8 @@ public class PlatformActivator : MonoBehaviour
     public GameObject movingPlatform;  
     public Material redMaterial;       
     public Material greenMaterial;     
-
     private MonoBehaviour platformScript;  
-    private Renderer renderer;             
+    private new Renderer renderer;             
     void Start()
     {
        
@@ -30,7 +29,6 @@ public class PlatformActivator : MonoBehaviour
             renderer.material = greenMaterial;
         }
     }
-
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player2") || (other.CompareTag("Player1")))

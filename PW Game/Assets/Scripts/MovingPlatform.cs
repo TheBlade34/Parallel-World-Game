@@ -7,12 +7,10 @@ public class ReusableMovingPlatform : MonoBehaviour
     public float waitTime = 1f;        
     private int currentWaypointIndex = 0;   
     private bool isMoving = true;           
-
     void Start()
     {
         transform.position = waypoints[currentWaypointIndex].position;
     }
-
     void Update()
     {
         if (isMoving)
@@ -31,7 +29,6 @@ public class ReusableMovingPlatform : MonoBehaviour
         Vector3 direction = (waypoints[currentWaypointIndex].position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
     }
-
     void StartMoving()
     {
         currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
@@ -45,7 +42,6 @@ public class ReusableMovingPlatform : MonoBehaviour
             other.transform.parent = transform;
         }
     }
-
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player1") || other.CompareTag("Player2"))

@@ -8,12 +8,10 @@ public class PlayerController2 : MonoBehaviour
     public float jumpForce = 10f;
     public Camera orthoCamera;
     public float cameraFollowSpeed = 5f;
-
     private Rigidbody rb;
     private bool isGrounded;
     private Vector3 movementInput;
     private Vector3 currentVelocity;
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -44,7 +42,6 @@ public class PlayerController2 : MonoBehaviour
         Vector3 targetCameraPos = new Vector3(transform.position.x, transform.position.y, orthoCamera.transform.position.z);
         orthoCamera.transform.position = Vector3.Lerp(orthoCamera.transform.position, targetCameraPos, Time.deltaTime * cameraFollowSpeed);
     }
-
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
