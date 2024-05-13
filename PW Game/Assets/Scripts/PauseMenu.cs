@@ -3,23 +3,27 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
-    public static PauseManager instance;
-    public string pauseMenuSceneName = "PauseMenu";
-    public GameObject pauseMenuUI;
-    bool isPaused = false;
+    public static PauseManager Instance { get; private set; }
 
-    void Awake()
+    public string pauseMenuSceneName = "PauseMenu";
+    private bool isPaused = false;
+
+    private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
             Destroy(gameObject);
+            return;
+        }
 
         DontDestroyOnLoad(gameObject);
-        Cursor.visible = false;
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -33,7 +37,6 @@ public class PauseManager : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0f;
-        Cursor.visible = true;
         SceneManager.LoadScene(pauseMenuSceneName, LoadSceneMode.Additive);
         isPaused = true;
     }
@@ -41,28 +44,38 @@ public class PauseManager : MonoBehaviour
     public void ResumeGame()
     {
         Time.timeScale = 1f;
-        Cursor.visible = false;
         SceneManager.UnloadSceneAsync(pauseMenuSceneName);
         isPaused = false;
     }
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        int activeSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(activeSceneIndex);
         ResumeGame();
     }
 
     public void QuitGame()
     {
+        // Quit the application
         Application.Quit();
     }
 
-    void OnLevelWasLoaded(int level)
+    private void OnEnable()
     {
-        if (SceneManager.GetSceneByName(pauseMenuSceneName).isLoaded && !isPaused)
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == pauseMenuSceneName && !isPaused)
         {
             SceneManager.UnloadSceneAsync(pauseMenuSceneName);
-            Cursor.visible = false;
         }
     }
 }
